@@ -42,7 +42,7 @@ Hyprland configuration for a Wayland compositor. Single config file setup (no sp
 ### Layout
 - Dwindle layout with pseudotiling enabled
 - Gaps: 5px inner, 20px outer
-- Border: 2px with gradient (cyan to green)
+- Border: 2px with gradient (purple to green, Aura theme)
 - Window rounding: 10px
 
 ### Color Palette (Aura Theme)
