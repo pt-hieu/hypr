@@ -206,7 +206,20 @@ tooltip label {
   background: rgba(21, 20, 27, 0.6);
   border-radius: 8px;
   padding: 0 10px;
+  margin: 6px 4px;
+}
+
+/* Power button */
+#custom-power {
+  color: @red;
+  background: rgba(21, 20, 27, 0.6);
+  border-radius: 8px;
+  padding: 0 12px;
   margin: 6px 8px 6px 4px;
+}
+
+#custom-power:hover {
+  background: rgba(255, 103, 103, 0.3);
 }
 
 #tray > .passive {

@@ -15,7 +15,8 @@
     "group/network",
     "pulseaudio",
     "battery",
-    "tray"
+    "tray",
+    "custom/power"
   ],
 
   "hyprland/workspaces": {
@@ -130,5 +131,11 @@
   "tray": {
     "icon-size": 18,
     "spacing": 8
+  },
+
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": "Shutdown",
+    "on-click": "systemctl poweroff"
   }
 }
