@@ -1,0 +1,113 @@
+/* Aura Theme for Waybar */
+* {
+  font-family: "JetBrains Mono Nerd Font", "Font Awesome 6 Free";
+  font-size: 13px;
+}
+
+window#waybar {
+  background: rgba(21, 20, 27, 0.9);
+  color: #edecee;
+}
+
+/* Workspaces */
+#workspaces button {
+  padding: 0 8px;
+  color: #edecee;
+  border-radius: 4px;
+  margin: 3px;
+}
+
+#workspaces button.active {
+  background: #a277ff;
+  color: #15141b;
+}
+
+#workspaces button:hover {
+  background: rgba(61, 55, 94, 0.5);
+}
+
+/* Clock - Primary Purple */
+#clock {
+  color: #a277ff;
+}
+
+/* Privacy - Red (attention) */
+#privacy {
+  color: #ff6767;
+}
+
+#privacy-item {
+  color: #ff6767;
+}
+
+/* CPU - Green */
+#cpu {
+  color: #61ffca;
+}
+
+/* Temperature - Orange */
+#temperature {
+  color: #ffca85;
+}
+
+#temperature.critical {
+  color: #ff6767;
+}
+
+/* Network bandwidth - Blue */
+#network.bandwidth {
+  color: #82e2ff;
+  font-size: 11px;
+}
+
+/* Pulseaudio - Green */
+#pulseaudio {
+  color: #61ffca;
+}
+
+#pulseaudio.muted {
+  color: #6d6d6d;
+}
+
+/* Network status - Blue */
+#network {
+  color: #82e2ff;
+}
+
+#network.disconnected {
+  color: #6d6d6d;
+}
+
+/* Battery - Orange */
+#battery {
+  color: #ffca85;
+}
+
+#battery.charging {
+  color: #61ffca;
+}
+
+#battery.warning {
+  color: #ffca85;
+}
+
+#battery.critical {
+  color: #ff6767;
+}
+
+/* Tray */
+#tray {
+  color: #edecee;
+}
+
+/* Common padding */
+#clock,
+#privacy,
+#cpu,
+#temperature,
+#network,
+#pulseaudio,
+#battery,
+#tray {
+  padding: 0 12px;
+}
