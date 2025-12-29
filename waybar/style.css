@@ -1,113 +1,230 @@
-/* Aura Theme for Waybar */
+/* Aura Theme for Waybar - Floating Design */
+
+/* Color Variables */
+@define-color bg rgba(21, 20, 27, 0.92);
+@define-color bg-solid #15141b;
+@define-color fg #edecee;
+@define-color muted #6d6d6d;
+@define-color purple #a277ff;
+@define-color green #61ffca;
+@define-color orange #ffca85;
+@define-color pink #f694ff;
+@define-color blue #82e2ff;
+@define-color red #ff6767;
+@define-color selection rgba(61, 55, 94, 0.5);
+
 * {
   font-family: "JetBrains Mono Nerd Font", "Font Awesome 6 Free";
-  font-size: 13px;
+  font-size: 14px;
+  min-height: 0;
 }
 
+/* Main Bar - Floating with rounded corners */
 window#waybar {
-  background: rgba(21, 20, 27, 0.9);
-  color: #edecee;
+  background: @bg;
+  color: @fg;
+  border-radius: 14px;
+  border: 2px solid rgba(162, 119, 255, 0.3);
 }
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+/* Tooltip styling */
+tooltip {
+  background: @bg-solid;
+  border: 1px solid @purple;
+  border-radius: 10px;
+}
+
+tooltip label {
+  color: @fg;
+  padding: 8px;
+}
+
+/* ===== LEFT MODULES ===== */
 
 /* Workspaces */
+#workspaces {
+  background: rgba(21, 20, 27, 0.6);
+  border-radius: 10px;
+  margin: 6px 4px;
+  padding: 0 4px;
+}
+
 #workspaces button {
-  padding: 0 8px;
-  color: #edecee;
-  border-radius: 4px;
-  margin: 3px;
+  padding: 0 10px;
+  color: @muted;
+  border-radius: 8px;
+  margin: 4px 2px;
+  transition: all 0.2s ease;
 }
 
 #workspaces button.active {
-  background: #a277ff;
-  color: #15141b;
+  background: linear-gradient(135deg, @purple, rgba(162, 119, 255, 0.7));
+  color: @bg-solid;
+  box-shadow: 0 0 8px rgba(162, 119, 255, 0.4);
 }
 
 #workspaces button:hover {
-  background: rgba(61, 55, 94, 0.5);
+  background: @selection;
+  color: @fg;
 }
 
-/* Clock - Primary Purple */
+#workspaces button.urgent {
+  background: @red;
+  color: @bg-solid;
+}
+
+/* Window title */
+#window {
+  color: @muted;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+/* ===== CENTER MODULES ===== */
+
+/* Clock */
 #clock {
-  color: #a277ff;
+  color: @purple;
+  padding: 6px 16px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-/* Privacy - Red (attention) */
+/* ===== RIGHT MODULES ===== */
+
+/* Privacy indicator */
 #privacy {
-  color: #ff6767;
+  color: @red;
+  padding: 0 12px;
 }
 
 #privacy-item {
-  color: #ff6767;
+  color: @red;
 }
 
-/* CPU - Green */
-#cpu {
-  color: #61ffca;
-}
-
-/* Temperature - Orange */
-#temperature {
-  color: #ffca85;
-}
-
-#temperature.critical {
-  color: #ff6767;
-}
-
-/* Network bandwidth - Blue */
-#network.bandwidth {
-  color: #82e2ff;
-  font-size: 11px;
-}
-
-/* Pulseaudio - Green */
-#pulseaudio {
-  color: #61ffca;
-}
-
-#pulseaudio.muted {
-  color: #6d6d6d;
-}
-
-/* Network status - Blue */
+/* Group containers - lighter background for visual grouping */
+#hardware,
 #network {
-  color: #82e2ff;
+  background: rgba(109, 109, 109, 0.15);
+  border-radius: 8px;
+  margin: 6px 4px;
+  padding: 0 6px;
+}
+
+/* Hardware group modules */
+#cpu {
+  color: @green;
+  padding: 0 10px;
+}
+
+#cpu.warning {
+  color: @orange;
+}
+
+#cpu.critical {
+  color: @red;
+}
+
+#memory {
+  color: @blue;
+  padding: 0 10px;
+}
+
+#memory.warning {
+  color: @orange;
+}
+
+#memory.critical {
+  color: @red;
+}
+
+/* Network group modules */
+#network.bandwidth {
+  color: @blue;
+  font-size: 11px;
+  padding: 0 8px;
+}
+
+#network {
+  color: @green;
+  padding: 0 10px;
 }
 
 #network.disconnected {
-  color: #6d6d6d;
+  color: @muted;
 }
 
-/* Battery - Orange */
+/* Pulseaudio */
+#pulseaudio {
+  background: rgba(97, 255, 202, 0.1);
+  color: @green;
+  border-radius: 8px;
+  padding: 0 12px;
+  margin: 6px 4px;
+}
+
+#pulseaudio.muted {
+  background: rgba(109, 109, 109, 0.2);
+  color: @muted;
+}
+
+/* Battery */
 #battery {
-  color: #ffca85;
+  background: rgba(255, 202, 133, 0.1);
+  color: @orange;
+  border-radius: 8px;
+  padding: 0 12px;
+  margin: 6px 4px;
 }
 
 #battery.charging {
-  color: #61ffca;
+  background: rgba(97, 255, 202, 0.1);
+  color: @green;
 }
 
 #battery.warning {
-  color: #ffca85;
+  background: rgba(255, 202, 133, 0.2);
+  color: @orange;
 }
 
 #battery.critical {
-  color: #ff6767;
+  background: rgba(255, 103, 103, 0.2);
+  color: @red;
+  animation: blink 0.5s ease infinite alternate;
 }
 
-/* Tray */
-#tray {
-  color: #edecee;
+#battery.full {
+  background: transparent;
 }
 
-/* Common padding */
-#clock,
-#privacy,
-#cpu,
-#temperature,
-#network,
-#pulseaudio,
-#battery,
+/* System tray */
 #tray {
-  padding: 0 12px;
+  background: rgba(21, 20, 27, 0.6);
+  border-radius: 8px;
+  padding: 0 10px;
+  margin: 6px 8px 6px 4px;
 }
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background: @red;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+

@@ -1,32 +1,48 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 30,
-  "modules-left": ["hyprland/workspaces"],
+  "height": 44,
+  "margin-top": 8,
+  "margin-left": 12,
+  "margin-right": 12,
+  "spacing": 0,
+
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
   "modules-center": ["clock"],
   "modules-right": [
     "privacy",
-    "cpu",
-    "temperature",
-    "network#bandwidth",
+    "group/hardware",
+    "group/network",
     "pulseaudio",
-    "network",
     "battery",
     "tray"
   ],
 
   "hyprland/workspaces": {
-    "format": "{name}",
+    "format": "{icon}  {name}",
+    "format-icons": {
+      "active": "󰮯",
+      "default": "󰊠"
+    },
     "on-click": "activate"
   },
 
+  "hyprland/window": {
+    "format": "{title}",
+    "max-length": 40,
+    "separate-outputs": true,
+    "icon": true,
+    "icon-size": 18
+  },
+
   "clock": {
-    "format": "{:%H:%M  %a %d %b}",
+    "format": "󰥔  {:%H:%M  󰃭  %a %d %b}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
   },
 
   "privacy": {
-    "icon-spacing": 5,
+    "icon-spacing": 8,
+    "icon-size": 16,
     "transition-duration": 250,
     "modules": [
       { "type": "screenshare", "tooltip": true },
@@ -34,54 +50,85 @@
     ]
   },
 
-  "cpu": {
-    "interval": 5,
-    "format": "󰍛 {usage}%",
-    "tooltip": true
+  "group/hardware": {
+    "orientation": "horizontal",
+    "modules": ["cpu", "memory"]
   },
 
-  "temperature": {
-    "critical-threshold": 80,
-    "format": " {temperatureC}°C",
-    "format-critical": " {temperatureC}°C",
-    "tooltip": true
+  "cpu": {
+    "interval": 5,
+    "format": "󰍛  {usage}%",
+    "tooltip": true,
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+
+  "memory": {
+    "interval": 10,
+    "format": "󰘚  {percentage}%",
+    "format-alt": "󰘚  {used:0.1f}G/{total:0.1f}G",
+    "tooltip-format": "RAM: {used:0.2f}GB / {total:0.2f}GB ({percentage}%)\nSwap: {swapUsed:0.2f}GB / {swapTotal:0.2f}GB ({swapPercentage}%)",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+
+  "group/network": {
+    "orientation": "horizontal",
+    "modules": ["network#bandwidth", "network"]
   },
 
   "network#bandwidth": {
     "interval": 2,
-    "format-wifi": "↓{bandwidthDownBytes} ↑{bandwidthUpBytes}",
-    "format-ethernet": "↓{bandwidthDownBytes} ↑{bandwidthUpBytes}",
+    "format-wifi": "󰁆  {bandwidthDownBytes}  󰁞  {bandwidthUpBytes}",
+    "format-ethernet": "󰁆  {bandwidthDownBytes}  󰁞  {bandwidthUpBytes}",
     "format-disconnected": "",
-    "tooltip-format": "Network: {essid}\nInterface: {ifname}\nIP: {ipaddr}/{cidr}\nGateway: {gwaddr}\n↓ {bandwidthDownBytes}  ↑ {bandwidthUpBytes}"
-  },
-
-  "pulseaudio": {
-    "format": "{volume}% {icon}",
-    "format-muted": "󰝟 muted",
-    "format-icons": {
-      "default": ["󰕿", "󰖀", "󰕾"]
-    },
-    "on-click": "pavucontrol"
+    "tooltip-format": "Network: {essid}\nInterface: {ifname}\nIP: {ipaddr}/{cidr}\nGateway: {gwaddr}\n󰁆 {bandwidthDownBytes}  󰁞 {bandwidthUpBytes}"
   },
 
   "network": {
-    "format-wifi": "{essid} 󰖩",
-    "format-ethernet": "󰈀 eth",
-    "format-disconnected": "󰖪 offline",
-    "tooltip-format": "{ifname}: {ipaddr}/{cidr}"
+    "format-wifi": "󰖩  {signalStrength}%",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰖪",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ifname}: {ipaddr}/{cidr}",
+    "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+    "tooltip-format-disconnected": "Disconnected"
+  },
+
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "󰝟",
+    "format-icons": {
+      "headphone": "󰋋",
+      "hands-free": "󰋎",
+      "headset": "󰋎",
+      "phone": "󰏲",
+      "portable": "󰏲",
+      "car": "󰄋",
+      "default": ["󰕿", "󰖀", "󰕾"]
+    },
+    "on-click": "pavucontrol",
+    "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
   },
 
   "battery": {
-    "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% 󰂄",
-    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "format": "{icon}  {capacity}%",
+    "format-charging": "󰂄  {capacity}%",
+    "format-plugged": "󰚥  {capacity}%",
+    "format-full": "󰁹",
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     "states": {
       "warning": 30,
       "critical": 15
-    }
+    },
+    "tooltip-format": "{capacity}% - {timeTo}"
   },
 
   "tray": {
-    "spacing": 10
+    "icon-size": 18,
+    "spacing": 8
   }
 }

@@ -45,6 +45,13 @@ Hyprland configuration for a Wayland compositor. Single config file setup (no sp
 - Border: 2px with gradient (purple to green, Aura theme)
 - Window rounding: 10px
 
+### Waybar Conventions
+- Config: `waybar/config`, Style: `waybar/style.css`
+- Floating bar with 8px top margin, 12px side margins, 14px border radius
+- **Icon spacing**: Always use 2 spaces (≈8px) between icons and text (e.g., `"󰍛  {usage}%"`)
+- Modules grouped with lighter background (`rgba(109, 109, 109, 0.15)`)
+- Colors follow Aura theme: purple (clock), green (cpu, audio, network), blue (memory, bandwidth), orange (battery)
+
 ### Color Palette (Aura Theme)
 ```css
 :root {
