@@ -55,7 +55,24 @@
 
   "group/hardware": {
     "orientation": "horizontal",
-    "modules": ["cpu", "memory"]
+    "modules": ["cpu", "temperature", "custom/gpu", "memory"]
+  },
+
+  "temperature": {
+    "interval": 5,
+    "thermal-zone": 3,
+    "format": "󰔏  {temperatureC}°",
+    "format-critical": "󰸁  {temperatureC}°",
+    "critical-threshold": 85,
+    "tooltip-format": "CPU: {temperatureC}°C / {temperatureF}°F"
+  },
+
+  "custom/gpu": {
+    "exec": "nvidia-smi --query-gpu=utilization.gpu,temperature.gpu,memory.used,memory.total --format=csv,noheader,nounits | awk -F', ' '{printf \"{\\\"text\\\": \\\"%s%%\\\", \\\"tooltip\\\": \\\"GPU: %s%%\\\\nTemp: %s°C\\\\nVRAM: %s/%s MiB\\\", \\\"class\\\": \\\"%s\\\"}\", $1, $1, $2, $3, $4, ($2 > 80 ? \"critical\" : ($2 > 70 ? \"warning\" : \"\"))}'",
+    "exec-if": "which nvidia-smi",
+    "return-type": "json",
+    "interval": 5,
+    "format": "󰢮  {}"
   },
 
   "cpu": {

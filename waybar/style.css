@@ -129,6 +129,28 @@ tooltip label {
   color: @red;
 }
 
+#temperature {
+  color: @orange;
+  padding: 0 10px;
+}
+
+#temperature.critical {
+  color: @red;
+}
+
+#custom-gpu {
+  color: @green;
+  padding: 0 10px;
+}
+
+#custom-gpu.warning {
+  color: @orange;
+}
+
+#custom-gpu.critical {
+  color: @red;
+}
+
 #memory {
   color: @blue;
   padding: 0 10px;
