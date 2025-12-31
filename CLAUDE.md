@@ -52,6 +52,30 @@ Hyprland configuration for a Wayland compositor. Single config file setup (no sp
 - Modules grouped with lighter background (`rgba(109, 109, 109, 0.15)`)
 - Colors follow Aura theme: purple (clock), green (cpu, audio, network), blue (memory, bandwidth), orange (battery)
 
+### EWW Dashboard
+- Config: `eww-dashboard/eww.yuck`, Style: `eww-dashboard/eww.scss`
+- Workspace script: `scripts/dashboard-workspace.sh` (shows on workspace 1 only)
+- Layer rule in hyprland.conf: `layerrule = noanim, eww-dashboard`
+
+**GTK CSS Limitations** (EWW uses GTK, NOT standard CSS):
+| Invalid | Use Instead |
+|---------|-------------|
+| `width` | `min-width` |
+| `height` | `min-height` |
+| `overflow` | (not supported, remove) |
+| `transition` | (not supported, remove) |
+| `width: 50%` | `min-width: 125px` (calculate pixels) |
+| `height: 100%` | `min-height: 8px` (fixed value) |
+
+**Dynamic styles in .yuck**: Use `px` units, not `%`:
+```lisp
+; ❌ Wrong - percentage not valid
+:style "width: ${value}%;"
+
+; ✅ Correct - calculate pixels
+:style "min-width: ${round(value / max * 250, 0)}px;"
+```
+
 ### Color Palette (Aura Theme)
 ```css
 :root {

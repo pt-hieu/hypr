@@ -61,7 +61,7 @@
 (defwidget dash-progress [value max ?class]
   (box :class "dash-progress ${class}"
     (box :class "dash-progress-fill"
-         :style "width: ${value == '' || max == '' || max == 0 ? 0 : round(value / max * 100, 0)}%;")))
+         :style "min-width: ${round((value == '' || max == '' || max == 0 ? 0 : value / max) * 250, 0)}px;")))
 
 ; Service indicator
 (defwidget service-status [name status]

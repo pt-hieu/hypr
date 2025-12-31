@@ -117,9 +117,8 @@ $dash-red: #ff6767;
 .dash-progress {
   background-color: rgba($dash-muted, 0.2);
   border-radius: 4px;
-  height: 8px;
+  min-height: 8px;
   margin-top: 4px;
-  overflow: hidden;
 
   &.green .dash-progress-fill {
     background: linear-gradient(90deg, $dash-green, rgba($dash-green, 0.7));
@@ -136,9 +135,8 @@ $dash-red: #ff6767;
 
 .dash-progress-fill {
   background: $dash-green;
-  height: 100%;
+  min-height: 8px;
   border-radius: 4px;
-  transition: width 0.3s ease;
 }
 
 .dash-storage-item {
