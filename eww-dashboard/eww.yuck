@@ -241,4 +241,5 @@
   :stacking "bottom"
   :exclusive false
   :focusable false
+  :namespace "eww-dashboard"
   (dashboard-content))
