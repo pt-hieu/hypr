@@ -1,0 +1,167 @@
+; Variables - polled every 2 seconds
+(defpoll cpu_usage :interval "2s"
+  `top -bn1 | grep "Cpu(s)" | awk '{print int($2)}'`)
+
+(defpoll cpu_temp :interval "2s"
+  `sensors | grep "Package id 0" | awk '{print int($4)}'`)
+
+(defpoll gpu_temp :interval "2s"
+  `nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits`)
+
+(defpoll gpu_usage :interval "2s"
+  `nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | tr -d ' '`)
+
+(defpoll gpu_mem :interval "2s"
+  `nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | awk '{print int($1)}'`)
+
+(defpoll ram_usage :interval "2s"
+  `free -m | awk '/Mem:/ {print int($3)}'`)
+
+(defpoll ram_total :interval "60s"
+  `free -m | awk '/Mem:/ {print int($2)}'`)
+
+(defpoll disk_read :interval "2s"
+  `iostat -d 1 2 | tail -n +4 | awk '{sum += $3} END {printf "%.1f", sum/1024}'`)
+
+(defpoll disk_write :interval "2s"
+  `iostat -d 1 2 | tail -n +4 | awk '{sum += $4} END {printf "%.1f", sum/1024}'`)
+
+(defpoll net_down :interval "2s"
+  `cat /proc/net/dev | grep -E 'enp|wlan|eth' | head -1 | awk '{printf "%.1f", $2/1024/1024}'`)
+
+(defpoll net_up :interval "2s"
+  `cat /proc/net/dev | grep -E 'enp|wlan|eth' | head -1 | awk '{printf "%.1f", $10/1024/1024}'`)
+
+; Widget definitions
+(defwidget stat [label value unit ?warn]
+  (box :class "stat ${warn ?: ''}" :orientation "h" :space-evenly false
+    (label :class "stat-label" :text label)
+    (label :class "stat-value" :text value)
+    (label :class "stat-unit" :text unit)))
+
+(defwidget cpu []
+  (box :class "section" :orientation "v" :space-evenly false
+    (label :class "section-title" :text "CPU")
+    (stat :label "Usage" :value cpu_usage :unit "%"
+          :warn {cpu_usage > 80 ? "warn" : ""})
+    (stat :label "Temp" :value cpu_temp :unit "°C"
+          :warn {cpu_temp > 70 ? "warn" : ""})))
+
+(defwidget gpu []
+  (box :class "section" :orientation "v" :space-evenly false
+    (label :class "section-title" :text "GPU")
+    (stat :label "Usage" :value gpu_usage :unit "%"
+          :warn {gpu_usage > 80 ? "warn" : ""})
+    (stat :label "Temp" :value gpu_temp :unit "°C"
+          :warn {gpu_temp > 75 ? "warn" : ""})
+    (stat :label "VRAM" :value gpu_mem :unit "MB")))
+
+(defwidget memory []
+  (box :class "section" :orientation "v" :space-evenly false
+    (label :class "section-title" :text "RAM")
+    (stat :label "Used" :value ram_usage :unit "MB")))
+
+(defwidget io []
+  (box :class "section" :orientation "v" :space-evenly false
+    (label :class "section-title" :text "I/O")
+    (stat :label "Read" :value disk_read :unit "MB/s")
+    (stat :label "Write" :value disk_write :unit "MB/s")))
+
+(defwidget stats []
+  (box :class "stats-container" :orientation "v" :space-evenly false
+    (cpu)
+    (gpu)
+    (memory)
+    (io)))
+
+; Window definition
+(defwindow stats
+  :monitor 0
+  :geometry (geometry :x "10px" :y "10px" :anchor "top right")
+  :stacking "overlay"
+  :exclusive false
+  :focusable false
+  (stats))
+
+; ═══════════════════════════════════════════════════════════════════════════════
+; CALENDAR WIDGET - Aura Theme
+; ═══════════════════════════════════════════════════════════════════════════════
+
+; Calendar month offset (stored in file, updated by nav script)
+(defpoll calendar_offset :interval "100ms"
+  `cat /tmp/eww-calendar-month 2>/dev/null || echo 0`)
+
+; Calendar data - regenerated when offset changes
+(defpoll calendar_data :interval "100ms"
+  `~/.config/hypr/scripts/calendar.sh $(cat /tmp/eww-calendar-month 2>/dev/null || echo 0)`)
+
+; Individual day cell widget
+(defwidget calendar-day [day today other-month]
+  (button
+    :class "calendar-day ${today ? 'today' : ''} ${other-month ? 'other-month' : ''}"
+    :onclick "echo 'clicked ${day}'"
+    (label :text day)))
+
+; Single week row widget
+(defwidget calendar-week [week]
+  (box :class "calendar-week" :orientation "h" :space-evenly true
+    (for day in week
+      (calendar-day
+        :day {day.day}
+        :today {day.today}
+        :other-month {day.other_month}))))
+
+; Navigation header with month/year and prev/next buttons
+(defwidget calendar-header []
+  (box :class "calendar-header" :orientation "h" :space-evenly false
+    (button
+      :class "calendar-nav-btn"
+      :onclick "~/.config/hypr/scripts/calendar-nav.sh prev"
+      (label :text "󰅁"))
+    (label
+      :class "calendar-month-year"
+      :hexpand true
+      :text {calendar_data.header})
+    (button
+      :class "calendar-nav-btn"
+      :onclick "~/.config/hypr/scripts/calendar-nav.sh next"
+      (label :text "󰅂"))))
+
+; Weekday labels row (Mon-Sun)
+(defwidget calendar-weekdays []
+  (box :class "calendar-weekdays" :orientation "h" :space-evenly true
+    (label :class "calendar-weekday" :text "Mon")
+    (label :class "calendar-weekday" :text "Tue")
+    (label :class "calendar-weekday" :text "Wed")
+    (label :class "calendar-weekday" :text "Thu")
+    (label :class "calendar-weekday" :text "Fri")
+    (label :class "calendar-weekday" :text "Sat")
+    (label :class "calendar-weekday" :text "Sun")))
+
+; Day grid - iterates over weeks from calendar_data
+(defwidget calendar-grid []
+  (box :class "calendar-grid" :orientation "v" :space-evenly true
+    (for week in {calendar_data.weeks}
+      (calendar-week :week week))))
+
+; Main calendar container widget
+(defwidget calendar-panel []
+  (box :class "calendar-container" :orientation "v" :space-evenly false
+    (calendar-header)
+    (calendar-weekdays)
+    (calendar-grid)))
+
+; Full-screen overlay with click-outside-to-close
+(defwindow aura-calendar
+  :monitor 0
+  :geometry (geometry :width "100%" :height "100%" :anchor "center")
+  :stacking "overlay"
+  :exclusive false
+  :focusable false
+  (eventbox
+    :onclick "eww close aura-calendar && ~/.config/hypr/scripts/calendar-nav.sh reset"
+    :vexpand true
+    :hexpand true
+    (box :class "calendar-backdrop" :valign "start" :halign "center" :vexpand true :hexpand true
+      (box :style "margin-top: 30px;"
+        (calendar-panel)))))
