@@ -3,7 +3,7 @@ precision highp float;
 
 // Vibrance Shader for Hyprland - Enhances color vibrance while preserving skin tones
 // Adjust these values to customize:
-const float VIBRANCE = 0.5;              // -1.0 to 1.0 (positive = more vibrant)
+const float VIBRANCE = 0.75;              // -1.0 to 1.0 (positive = more vibrant)
 const float SKIN_TONE_PROTECTION = 0.75; // 0.0 to 1.0 (higher = preserve skin tones)
 
 in vec2 v_texcoord;
