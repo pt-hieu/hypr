@@ -13,6 +13,7 @@
     "privacy",
     "group/hardware",
     "group/network",
+    "mpris",
     "pulseaudio",
     "battery",
     "tray",
@@ -38,7 +39,8 @@
 
   "clock": {
     "format": "󰥔  {:%H:%M  󰃭  %a %d %b}",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "on-click": "~/.config/hypr/scripts/toggle-calendar.sh"
   },
 
   "privacy": {
@@ -97,6 +99,21 @@
     "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ifname}: {ipaddr}/{cidr}",
     "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr}",
     "tooltip-format-disconnected": "Disconnected"
+  },
+
+  "mpris": {
+    "format": "{status_icon}  {title}",
+    "format-paused": "{status_icon}  {title}",
+    "format-stopped": "",
+    "status-icons": {
+      "playing": "󰏤",
+      "paused": "󰐊"
+    },
+    "title-len": 30,
+    "tooltip-format": "{artist} - {title} ({album})",
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next",
+    "on-click-middle": "playerctl previous"
   },
 
   "pulseaudio": {

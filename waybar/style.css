@@ -158,6 +158,27 @@ tooltip label {
   color: @muted;
 }
 
+/* MPRIS - Media */
+#mpris {
+  background: rgba(97, 255, 202, 0.1);
+  color: @green;
+  border-radius: 8px;
+  padding: 0 12px;
+  margin: 6px 4px;
+  min-width: 200px;
+}
+
+#mpris.paused {
+  color: @muted;
+}
+
+#mpris.stopped {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
 /* Pulseaudio */
 #pulseaudio {
   background: rgba(97, 255, 202, 0.1);
