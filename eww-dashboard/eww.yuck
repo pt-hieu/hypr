@@ -73,7 +73,7 @@
 ; System Panel
 (defwidget system-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "SYSTEM")
+    (label :class "dash-panel-title" :text "󰒋  SYSTEM")
     (box :class "dash-info-row" :orientation "h" :space-evenly false
       (label :class "dash-icon" :text "󰣇")
       (label :class "dash-value" :text {sysinfo.os}))
@@ -87,99 +87,83 @@
 ; CPU Panel
 (defwidget cpu-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "CPU")
+    (label :class "dash-panel-title" :text "󰻠  CPU")
     (box :class "dash-info-row" :orientation "h" :space-evenly false
       (label :class "dash-icon" :text "󰻠")
       (label :class "dash-value truncate" :text {sysinfo.cpu_model}))
     (box :class "dash-info-row" :orientation "h" :space-evenly false
       (label :class "dash-label" :text "Cores")
       (label :class "dash-value" :text {sysinfo.cpu_cores}))
-    (box :class "dash-metric" :orientation "v" :space-evenly false
-      (box :orientation "h" :space-evenly false
-        (label :class "dash-label" :text "Usage")
+    (box :class "dash-metrics-row" :orientation "v" :space-evenly false
+      (box :class "dash-metric-item" :orientation "h" :space-evenly false
+        (label :class "dash-icon" :text "󰓅")
         (label :class "dash-value ${cpu_usage > 80 ? 'warn' : ''}" :text "${cpu_usage}%"))
-      (dash-progress :value cpu_usage :max 100 :class "green"))
-    (box :class "dash-info-row" :orientation "h" :space-evenly false
-      (label :class "dash-icon" :text "󰔏")
-      (label :class "dash-value ${cpu_temp > 70 ? 'warn' : ''}" :text "${cpu_temp}°C"))))
+      (box :class "dash-metric-item" :orientation "h" :space-evenly false
+        (label :class "dash-icon" :text "󰔏")
+        (label :class "dash-value ${cpu_temp > 70 ? 'warn' : ''}" :text "${cpu_temp}°C")))))
 
 ; GPU Panel
 (defwidget gpu-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "GPU")
+    (label :class "dash-panel-title" :text "󰢮  GPU")
     (box :class "dash-info-row" :orientation "h" :space-evenly false
       (label :class "dash-icon" :text "󰢮")
       (label :class "dash-value truncate" :text {sysinfo.gpu_model}))
     (box :class "dash-info-row" :orientation "h" :space-evenly false
       (label :class "dash-label" :text "VRAM")
       (label :class "dash-value" :text "${sysinfo.gpu_vram_total} MB"))
-    (box :class "dash-metric" :orientation "v" :space-evenly false
-      (box :orientation "h" :space-evenly false
-        (label :class "dash-label" :text "Usage")
+    (box :class "dash-metrics-row" :orientation "v" :space-evenly false
+      (box :class "dash-metric-item" :orientation "h" :space-evenly false
+        (label :class "dash-icon" :text "󰓅")
         (label :class "dash-value ${gpu_usage > 80 ? 'warn' : ''}" :text "${gpu_usage}%"))
-      (dash-progress :value gpu_usage :max 100 :class "green"))
-    (box :class "dash-info-row" :orientation "h" :space-evenly false
-      (label :class "dash-icon" :text "󰔏")
-      (label :class "dash-value ${gpu_temp > 75 ? 'warn' : ''}" :text "${gpu_temp}°C"))))
+      (box :class "dash-metric-item" :orientation "h" :space-evenly false
+        (label :class "dash-icon" :text "󰔏")
+        (label :class "dash-value ${gpu_temp > 75 ? 'warn' : ''}" :text "${gpu_temp}°C")))))
 
 ; Storage Panel
 (defwidget storage-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "STORAGE")
-    (box :class "dash-storage-item" :orientation "v" :space-evenly false
-      (box :orientation "h" :space-evenly false
-        (label :class "dash-icon" :text "󰋊")
-        (label :class "dash-label" :text "Root (btrfs)"))
-      (dash-progress :value disk_root_used :max disk_root_total :class "purple")
-      (label :class "dash-storage-detail" :text "${disk_root_used}G / ${disk_root_total}G"))
-    (box :class "dash-storage-item" :orientation "v" :space-evenly false
-      (box :orientation "h" :space-evenly false
-        (label :class "dash-icon" :text "󰋊")
-        (label :class "dash-label" :text "Boot"))
-      (dash-progress :value disk_boot_used :max disk_boot_total :class "purple")
-      (label :class "dash-storage-detail" :text "${disk_boot_used}M / ${disk_boot_total}M"))))
+    (label :class "dash-panel-title" :text "󰋊  STORAGE")
+    (box :class "dash-metrics-row" :orientation "v" :space-evenly false
+      (box :class "dash-metric-item" :orientation "v" :space-evenly false
+        (label :class "dash-label" :text "Root")
+        (label :class "dash-value" :text "${disk_root_used}G / ${disk_root_total}G"))
+      (box :class "dash-metric-item" :orientation "v" :space-evenly false
+        (label :class "dash-label" :text "Boot")
+        (label :class "dash-value" :text "${disk_boot_used}M / ${disk_boot_total}M")))))
 
 ; Memory Panel
 (defwidget memory-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "MEMORY")
-    (box :class "dash-storage-item" :orientation "v" :space-evenly false
-      (box :orientation "h" :space-evenly false
-        (label :class "dash-icon" :text "󰍛")
-        (label :class "dash-label" :text "RAM"))
-      (dash-progress :value ram_usage :max ram_total :class "blue")
-      (label :class "dash-storage-detail" :text "${ram_usage} MB / ${ram_total} MB"))
-    (box :class "dash-storage-item" :orientation "v" :space-evenly false
-      (box :orientation "h" :space-evenly false
-        (label :class "dash-icon" :text "󱪓")
-        (label :class "dash-label" :text "Swap (zram)"))
-      (dash-progress :value swap_used :max swap_total :class "blue")
-      (label :class "dash-storage-detail" :text "${swap_used}G / ${swap_total}G"))))
+    (label :class "dash-panel-title" :text "󰍛  MEMORY")
+    (box :class "dash-metrics-row" :orientation "v" :space-evenly false
+      (box :class "dash-metric-item" :orientation "v" :space-evenly false
+        (label :class "dash-label" :text "RAM")
+        (label :class "dash-value" :text "${ram_usage} / ${ram_total} MB"))
+      (box :class "dash-metric-item" :orientation "v" :space-evenly false
+        (label :class "dash-label" :text "Swap")
+        (label :class "dash-value" :text "${swap_used}G / ${swap_total}G")))))
 
 ; Network Panel
 (defwidget network-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "NETWORK")
-    (box :class "dash-info-row" :orientation "h" :space-evenly false
-      (label :class "dash-icon" :text "󰈀")
-      (label :class "dash-value" :text "enp4s0"))
-    (box :class "dash-info-row" :orientation "h" :space-evenly false
-      (label :class "dash-label" :text "IP")
-      (label :class "dash-value" :text net_ip))
-    (box :class "dash-info-row" :orientation "h" :space-evenly false
-      (label :class "dash-icon" :text "󰇚")
-      (label :class "dash-value" :text "${net_down} MB/s"))
-    (box :class "dash-info-row" :orientation "h" :space-evenly false
-      (label :class "dash-icon" :text "󰕒")
-      (label :class "dash-value" :text "${net_up} MB/s"))
+    (label :class "dash-panel-title" :text "󰈀  NETWORK")
     (box :class "dash-info-row" :orientation "h" :space-evenly false
       (label :class "dash-icon ${net_status == 'up' ? 'active' : 'inactive'}" :text "󰒍")
-      (label :class "dash-value" :text {net_status == "up" ? "Connected" : "Disconnected"}))))
+      (label :class "dash-value" :text "enp4s0")
+      (label :class "dash-label" :text " - ${net_ip}"))
+    (box :class "dash-metrics-row" :orientation "v" :space-evenly false
+      (box :class "dash-metric-item" :orientation "h" :space-evenly false
+        (label :class "dash-icon" :text "󰇚")
+        (label :class "dash-value" :text "${net_down} MB/s"))
+      (box :class "dash-metric-item" :orientation "h" :space-evenly false
+        (label :class "dash-icon" :text "󰕒")
+        (label :class "dash-value" :text "${net_up} MB/s")))))
 
 ; Services Panel
 (defwidget services-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "SERVICES")
+    (label :class "dash-panel-title" :text "󰒔  SERVICES")
     (service-status :name "NetworkManager" :status svc_network)
     (service-status :name "Bluetooth" :status svc_bluetooth)
     (service-status :name "SDDM" :status svc_sddm)))
@@ -187,7 +171,7 @@
 ; Packages Panel
 (defwidget packages-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "PACKAGES")
+    (label :class "dash-panel-title" :text "󰏖  PACKAGES")
     (box :class "dash-info-row" :orientation "h" :space-evenly false
       (label :class "dash-icon" :text "󰏖")
       (label :class "dash-label" :text "Installed")
@@ -204,40 +188,40 @@
 ; I/O Panel
 (defwidget io-panel []
   (box :class "dash-panel" :orientation "v" :space-evenly false
-    (label :class "dash-panel-title" :text "I/O")
-    (box :class "dash-info-row" :orientation "h" :space-evenly false
-      (label :class "dash-icon" :text "󰋊")
-      (label :class "dash-label" :text "Read")
-      (label :class "dash-value" :text "${disk_read} MB/s"))
-    (box :class "dash-info-row" :orientation "h" :space-evenly false
-      (label :class "dash-icon" :text "󰋊")
-      (label :class "dash-label" :text "Write")
-      (label :class "dash-value" :text "${disk_write} MB/s"))
+    (label :class "dash-panel-title" :text "󰓅  I/O")
+    (box :class "dash-metrics-row" :orientation "v" :space-evenly false
+      (box :class "dash-metric-item" :orientation "h" :space-evenly false
+        (label :class "dash-icon" :text "󰛴")
+        (label :class "dash-value" :text "${disk_read} MB/s"))
+      (box :class "dash-metric-item" :orientation "h" :space-evenly false
+        (label :class "dash-icon" :text "󰛶")
+        (label :class "dash-value" :text "${disk_write} MB/s")))
     (box :class "dash-info-row" :orientation "h" :space-evenly false
       (label :class "dash-icon" :text "󱂵")
       (label :class "dash-label" :text "Load")
       (label :class "dash-value" :text load_avg))))
 
-; Main Dashboard Grid
+; Main Dashboard - Bento Grid
 (defwidget dashboard-content []
-  (box :class "dashboard-container" :orientation "v" :space-evenly false
-    (box :class "dashboard-row" :orientation "h" :space-evenly true
+  (box :class "dashboard-container" :orientation "h" :space-evenly false
+    ; Column 1 - wider (CPU/GPU)
+    (box :class "bento-column wide" :orientation "v" :space-evenly false
       (system-panel)
       (cpu-panel)
-      (gpu-panel))
-    (box :class "dashboard-row" :orientation "h" :space-evenly true
+      (gpu-panel)
       (storage-panel)
-      (memory-panel)
-      (network-panel))
-    (box :class "dashboard-row" :orientation "h" :space-evenly true
+      (memory-panel))
+    ; Column 2 - narrow
+    (box :class "bento-column narrow" :orientation "v" :space-evenly false
       (services-panel)
+      (network-panel)
       (packages-panel)
       (io-panel))))
 
 ; Dashboard Window
 (defwindow dashboard
   :monitor 0
-  :geometry (geometry :width "70%" :height "60%" :anchor "center")
+  :geometry (geometry :anchor "top left" :x 20 :y 20)
   :stacking "bottom"
   :exclusive false
   :focusable false

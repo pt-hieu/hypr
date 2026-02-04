@@ -8,8 +8,8 @@
   font-size: 13px;
 }
 
-$dash-bg: rgba(21, 20, 27, 0.85);
-$dash-panel-bg: rgba(30, 29, 38, 0.9);
+$dash-bg: rgba(21, 20, 27, 0.6);
+$dash-panel-bg: rgba(30, 29, 38, 0.7);
 $dash-fg: #edecee;
 $dash-muted: #6d6d6d;
 $dash-purple: #a277ff;
@@ -20,10 +20,8 @@ $dash-red: #ff6767;
 
 .dashboard-container {
   background-color: transparent;
-  border-radius: 16px;
-  padding: 20px;
-  border: 2px solid $dash-purple;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  padding: 12px;
 }
 
 .dashboard-row {
@@ -36,19 +34,29 @@ $dash-red: #ff6767;
 
 .dash-panel {
   background-color: $dash-panel-bg;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 0 8px;
-  min-width: 280px;
-  min-height: 160px;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
   border: 1px solid rgba($dash-muted, 0.2);
 
-  &:first-child {
-    margin-left: 0;
+  &:last-child {
+    margin-bottom: 0;
   }
+}
+
+.bento-column {
+  margin-right: 12px;
 
   &:last-child {
     margin-right: 0;
+  }
+
+  &.narrow .dash-panel {
+    min-width: 160px;
+  }
+
+  &.wide .dash-panel {
+    min-width: 200px;
   }
 }
 
@@ -112,6 +120,15 @@ $dash-red: #ff6767;
 
 .dash-metric {
   margin: 8px 0;
+}
+
+.dash-metrics-row {
+  margin: 12px 0;
+  padding: 8px 0;
+}
+
+.dash-metric-item {
+  padding: 4px 8px;
 }
 
 .dash-progress {
